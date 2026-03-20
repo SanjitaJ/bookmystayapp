@@ -1,72 +1,17 @@
-import java.util.*;
-
 /**
- * UseCase7AddOnServiceSelection
+ * UseCase1HotelBookingApp
  *
- * Simplified add-on service calculation.
+ * Entry point of the Hotel Booking Management System.
  *
  * @author Sanjita
- * @version 7.1
+ * @version 1.0
  */
-
-// Service class
-class Service {
-    private String name;
-    private double cost;
-
-    public Service(String name, double cost) {
-        this.name = name;
-        this.cost = cost;
-    }
-
-    public double getCost() {
-        return cost;
-    }
-}
-
-// Manager
-class AddOnServiceManager {
-
-    private Map<String, List<Service>> serviceMap = new HashMap<>();
-
-    public void addService(String reservationId, Service service) {
-        serviceMap.putIfAbsent(reservationId, new ArrayList<>());
-        serviceMap.get(reservationId).add(service);
-    }
-
-    public void displayTotalCost(String reservationId) {
-
-        System.out.println("Add-On Service Selection");
-        System.out.println("Reservation ID: " + reservationId);
-
-        List<Service> services = serviceMap.get(reservationId);
-
-        double total = 0;
-
-        if (services != null) {
-            for (Service s : services) {
-                total += s.getCost();
-            }
-        }
-
-        System.out.println("Total Add-On Cost: " + total);
-    }
-}
-
-// Main
 public class bookmystayapp{
 
     public static void main(String[] args) {
 
-        AddOnServiceManager manager = new AddOnServiceManager();
+        System.out.println("Welcome to Hotel Booking Management System");
+        System.out.println("System initialized successfully");
 
-        String reservationId = "Single-1";
-
-        // Add services (example → total = 1500)
-        manager.addService(reservationId, new Service("Breakfast", 500));
-        manager.addService(reservationId, new Service("Spa", 1000));
-
-        // Display result
-        manager.displayTotalCost(reservationId);
     }
 }
