@@ -2,15 +2,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * UseCase3InventorySetup
+ * UseCase4RoomSearch
  *
- * Demonstrates centralized room inventory management using HashMap.
+ * Demonstrates read-only room search with availability filtering.
  *
  * @author Sanjita
- * @version 3.1
+ * @version 4.1
  */
 
-// Abstract Room class
+// Abstract Room
 abstract class Room {
     protected int beds;
     protected int size;
@@ -65,12 +65,10 @@ class SuiteRoom extends Room {
     }
 }
 
-// Inventory Class (NEW)
+// Inventory (Same as UC3)
 class RoomInventory {
-
     private Map<String, Integer> inventory;
 
-    // Constructor initializes inventory
     public RoomInventory() {
         inventory = new HashMap<>();
         inventory.put("Single", 5);
@@ -78,23 +76,25 @@ class RoomInventory {
         inventory.put("Suite", 2);
     }
 
-    // Get availability
     public int getAvailability(String roomType) {
         return inventory.getOrDefault(roomType, 0);
     }
+}
 
-    // Update availability
-    public void updateAvailability(String roomType, int count) {
-        inventory.put(roomType, count);
-    }
+// Search Service (NEW)
+class RoomSearchService {
 
-    // Display all inventory
-    public void displayInventory(Room[] rooms) {
-        System.out.println("Hotel Room Inventory Status\n");
+    public void searchAvailableRooms(Room[] rooms, RoomInventory inventory) {
+
+        System.out.println("Available Rooms for Booking\n");
 
         for (Room room : rooms) {
-            int available = getAvailability(room.getRoomType());
-            room.displayDetails(available);
+            int available = inventory.getAvailability(room.getRoomType());
+
+            // Filter: show only available rooms
+            if (available > 0) {
+                room.displayDetails(available);
+            }
         }
     }
 }
@@ -104,17 +104,20 @@ public class bookmystayapp{
 
     public static void main(String[] args) {
 
-        // Create room objects
+        // Room objects
         Room single = new SingleRoom();
         Room doubleRoom = new DoubleRoom();
         Room suite = new SuiteRoom();
 
         Room[] rooms = {single, doubleRoom, suite};
 
-        // Initialize inventory
+        // Inventory
         RoomInventory inventory = new RoomInventory();
 
-        // Display inventory
-        inventory.displayInventory(rooms);
+        // Search Service
+        RoomSearchService searchService = new RoomSearchService();
+
+        // Perform search (READ-ONLY)
+        searchService.searchAvailableRooms(rooms, inventory);
     }
 }
